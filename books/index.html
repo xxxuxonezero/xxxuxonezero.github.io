@@ -1,28 +1,870 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>BOOKS | onezero</title><meta name="description" content=".hexo-douban-tabs {     margin-bottom: 15px;     margin-top: 15px; }  .hexo-douban-tab {     padding: 5px; }  .hexo-douban-active {     background: #657b83;     color: #"><meta name="keywords" content="日常"><meta name="author" content="xxxuxonezero"><meta name="copyright" content="xxxuxonezero"><meta name="format-detection" content="telephone=no"><link rel="shortcut icon" href="http://www.yelin.monster/pictures/favicon_.ico"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="crossorigin"/><link rel="dns-prefetch" href="https://fonts.googleapis.com"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="dns-prefetch" href="//busuanzi.ibruce.info"/><meta name="twitter:card" content="summary"><meta name="twitter:title" content="BOOKS"><meta name="twitter:description" content=".hexo-douban-tabs {     margin-bottom: 15px;     margin-top: 15px; }  .hexo-douban-tab {     padding: 5px; }  .hexo-douban-active {     background: #657b83;     color: #"><meta name="twitter:image" content="https://xxxuxonezero.github.io/img/EXo9mSKU0AABu2E.jpeg"><meta property="og:type" content="website"><meta property="og:title" content="BOOKS"><meta property="og:url" content="https://xxxuxonezero.github.io/books/"><meta property="og:site_name" content="onezero"><meta property="og:description" content=".hexo-douban-tabs {     margin-bottom: 15px;     margin-top: 15px; }  .hexo-douban-tab {     padding: 5px; }  .hexo-douban-active {     background: #657b83;     color: #"><meta property="og:image" content="https://xxxuxonezero.github.io/img/EXo9mSKU0AABu2E.jpeg"><meta property="article:published_time" content="2020-05-21T15:46:59.613Z"><meta property="article:modified_time" content="2020-05-21T15:46:59.613Z"><script src="https://cdn.jsdelivr.net/npm/js-cookie/dist/js.cookie.min.js"></script><script>var autoChangeMode = '1'
+var t = Cookies.get("theme")
+if (autoChangeMode == '1'){
+  var isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
+  var isLightMode = window.matchMedia("(prefers-color-scheme: light)").matches
+  var isNotSpecified = window.matchMedia("(prefers-color-scheme: no-preference)").matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
 
-block content
-  if page.type === 'tags'
-    .tag-cloud
-      .tag-cloud__title= _p('page.tag')
-        |  - 
-        span.tag-cloud__amount= site.tags.length
-      .tag-cloud-tags
-        !=cloudTags({source: site.tags, minfontsize: 15, maxfontsize: 30, limit: 0})
-      if page.comments !== false
-        include includes/comments/index.pug
-  else if page.type === 'link'
-    include flink.pug
-  else if page.type === 'categories'    
-    .category-content
-      .category-lists
-        .category__title= _p('page.category')
-          |  - 
-          span.category__amount= site.categories.length
-        div!= list_categories()
-      if page.comments !== false
-        include includes/comments/index.pug
-  else
-    #page
-      #article-container!= page.content
-      if page.comments !== false
-        include includes/comments/index.pug
+  if (t === undefined){
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport){
+      console.log('You specified no preference for a color scheme or your browser does not support it. I Schedule dark mode during night time.')
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour < 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+  }
+  } else if (t == 'light') activateLightMode()
+  else activateDarkMode()
+
+} else if (autoChangeMode == '2'){
+  now = new Date();
+  hour = now.getHours();
+  isNight = hour < 6 || hour >= 18
+  if(t === undefined) isNight? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode() 
+} else {
+  if ( t == 'dark' ) activateDarkMode()
+  else if ( t == 'light') activateLightMode()
+}
+
+function activateDarkMode(){
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+    document.querySelector('meta[name="theme-color"]').setAttribute('content','#000')
+  }
+}
+function activateLightMode(){
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null){
+  document.querySelector('meta[name="theme-color"]').setAttribute('content','#fff')
+  }
+}</script><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@latest/css/font-awesome.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><link rel="canonical" href="https://xxxuxonezero.github.io/books/"><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Titillium+Web"><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: {"defaultEncoding":2,"translateDelay":0,"cookieDomain":"https://xxx/","msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  bookmark: {
+    message_prev: '按',
+    message_next: '键将本页加入书签'
+  },
+  runtime_unit: '天',
+  runtime: true,
+  copyright: undefined,
+  ClickShowText: {"text":"I,LOVE,YOU","fontSize":"15px"},
+  medium_zoom: false,
+  fancybox: true,
+  Snackbar: undefined,
+  baiduPush: false,
+  highlightCopy: true,
+  highlightLang: true,
+  highlightShrink: 'false',
+  isFontAwesomeV5: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+  
+}</script><script>var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: false,
+  isSidebar: false  
+  }</script><noscript><style>
+#page-header {
+  opacity: 1
+}
+.justified-gallery img{
+  opacity: 1
+}
+</style></noscript><meta name="generator" content="Hexo 4.2.0"></head><body><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/EXo9mSKU0AABu2E.jpeg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">13</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">15</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">3</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> Book</span></a></li></ul></div></div></div></div><div id="body-wrap"><div class="not-index-bg" id="nav" style="background-image: url(/img/81496502_p0_master1200.jpg)"><div id="page-header"><span class="pull_left" id="blog_name"><a class="blog_title" id="site-name" href="/">onezero</a></span><span class="pull_right menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fa fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-heart"></i><span> About</span></a></div><div class="menus_item"><a class="site-page"><i class="fa-fw fa fa-list" aria-hidden="true"></i><span> List</span><i class="fa fa-chevron-down menus-expand" aria-hidden="true"></i></a><ul class="menus_item_child"><li><a class="site-page" href="/music/"><i class="fa-fw fa fa-music"></i><span> Music</span></a></li><li><a class="site-page" href="/movies/"><i class="fa-fw fa fa-film"></i><span> Movie</span></a></li><li><a class="site-page" href="/books/"><i class="fa-fw fa fa-book"></i><span> Book</span></a></li></ul></div></div><span class="toggle-menu close"><a class="site-page"><i class="fa fa-bars fa-fw" aria-hidden="true"></i></a></span></span></div><div id="page_site-info"><h1 id="site_title">BOOKS</h1></div></div><main class="layout_page" id="content-inner"><div id="page"><div id="article-container"><blockquote>
+    <p></p>
+</blockquote>
+
+<style>
+    
+.hexo-douban-tabs {
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.hexo-douban-tab {
+    padding: 5px;
+}
+
+.hexo-douban-active {
+    background: #657b83;
+    color: #fff;
+}
+
+.hexo-douban-item {
+    padding-bottom: 10px;
+    position: relative;
+    clear: both;
+    min-height: 170px;
+    padding: 10px 0;
+    border-bottom: 1px #ddd solid;
+}
+
+@media screen and (max-width: 600px) {
+    .hexo-douban-item {
+        width: 100%;
+    }
+}
+
+.hexo-douban-picture {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 100px;
+}
+
+.hexo-douban-info {
+    padding-left: 120px;
+}
+
+.hexo-douban-meta {
+    font-size: 12px;
+    padding-right: 10px;
+}
+
+.hexo-douban-comments {
+    font-size: 12px;
+}
+
+.hexo-douban-pagination {
+    margin-top: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.hexo-douban-button {
+    padding: 5px;
+}
+
+.hexo-douban-button:hover {
+    background: #657b83;
+    color: #fff;
+}
+
+.hexo-douban-hide {
+    display: none;
+}
+
+.hexo-douban-show {
+    display: block;
+}
+
+
+</style>
+
+<div class="hexo-douban-tabs">
+    <a class="hexo-douban-tab" id="hexo-douban-tab1" href="javascript:;"
+       rel="external">
+        在读
+        (0)</a>
+    <a class="hexo-douban-tab" id="hexo-douban-tab2" href="javascript:;"
+       rel="external">
+        想读
+        (1)</a>
+    <a class="hexo-douban-tab" id="hexo-douban-tab3" href="javascript:;"
+       rel="external">
+        已读
+        (24)</a>
+</div>
+<div>
+    <div id="hexo-douban-item1">
+        
+        <div class="hexo-douban-pagination">
+    <a class="hexo-douban-button hexo-douban-firstpage" href="javascript:;"> 首页</a>
+    <a class="hexo-douban-button hexo-douban-previouspage" href="javascript:;">上一页</a>
+    <span class="hexo-douban-pagenum">2 / 3</span>
+    <a class="hexo-douban-button hexo-douban-nextpage" href="javascript:;">下一页</a>
+    <a class="hexo-douban-button hexo-douban-lastpage" href="javascript:;">尾页</a>
+</div>
+    </div>
+    <div id="hexo-douban-item2">
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27812572.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26260187/"> 零秒思考</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [日]赤羽雄二 / 曹倩 / 北京联合出版公司·后浪出版公司 / 2014-12 / 28.00元
+
+      
+        </div>
+        <div class="hexo-douban-meta">2020-05-04
+      想读 / </div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-pagination">
+    <a class="hexo-douban-button hexo-douban-firstpage" href="javascript:;"> 首页</a>
+    <a class="hexo-douban-button hexo-douban-previouspage" href="javascript:;">上一页</a>
+    <span class="hexo-douban-pagenum">2 / 3</span>
+    <a class="hexo-douban-button hexo-douban-nextpage" href="javascript:;">下一页</a>
+    <a class="hexo-douban-button hexo-douban-lastpage" href="javascript:;">尾页</a>
+</div>
+
+    </div>
+    <div id="hexo-douban-item3">
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29063065.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26880667/"> Java核心技术·卷 I（原书第10版）</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美] 凯.S.霍斯特曼（Cay S. Horstmann） / 周立新 等 / 机械工业出版社 / 2016-9 / CNY 119.00
+
+      </div>
+        <div class="hexo-douban-meta">2020-05-20
+      读过 /  / </div>
+        <div class="hexo-douban-comments">
+      这本书挑自己想学的部分看一下就可以了，没必要全书通读。这本书更像是一本工具书。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27283822.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25863515/"> 图解HTTP</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  【日】上野宣 / 于均良 / 人民邮电出版社 / 2014-4-15 / 49.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-05-15
+      读过 /  / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s32299271.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/33420587/"> 漫画算法：小灰的算法之旅</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  魏梦舒 / 电子工业出版社 / 2019-5 / 79.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-05-12
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      里面有很多图，看起来一点也不费力。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s33575900.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/34942549/"> 鲜衣怒马少年时-唐宋诗人的诗酒江湖</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  少年怒马 著、博集天卷 出品 / 湖南文艺出版社 / 49元
+
+      </div>
+        <div class="hexo-douban-meta">2020-05-12
+      读过 /  / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+      快餐式文学
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s27201117.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25802944/"> 大唐李白·少年游</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  张大春 / 广西师范大学出版社 / 2014-1-1 / 39.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-05-08
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      读起来有点困难
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s33582657.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/34978010/"> 见山是山见水是水，见你是全世界</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  大柠 / 百花洲文艺出版社 / 2020-3-14 / 49.80
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-28
+      读过 /  爱情 / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+      其实看这本书，有点让我在看高中作文的感觉。不过还是很羡慕大柠和大林的爱情的，希望他们的爱情可以天长地久。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s33586929.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/34981242/"> 人间告白</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  金鱼酱 / 百花洲文艺出版社 / 2020-3 / 49.80元
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-27
+      读过 /  纪实 / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      这本书是看见小苏推荐买的。看这本书的时候基本一直在哭。我其实特别羡慕小锦和小忽的爱情，从校园到婚纱，就算曾经中途走散，可依旧是殊途同归。他们的爱情就像是小说中的一般，美好，但是遗憾的是，病魔带走了小忽，他们终究还是没能相伴到老。看这本书的时候，我一直在想生命的脆弱，想我的爸爸，我很怕怕他离我而去，可是我不知道该怎么去说。我跟父母之间的沟通很少，这已经是这20年来的相处模式了，我不知道该如何去改变，我也不知道要怎么和父母沟通。
+另外，小锦和小忽都是很好的父母，花生一定会成为一个热爱生活，享受生活，为周围人带来阳光的小男子汉的。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s30010617.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26712353/"> 血疫</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [美] 理查德·普雷斯顿 / 姚向辉 / 上海译文出版社 / 2016-3 / 45.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-25
+      读过 /  纪实 埃博拉 / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      之前因为封面，一直不太敢看，这几天花时间把它看完了。其实刚开始看的时候我一度想要弃书，实在是前面大段描述病人感染了马尔堡、埃博拉病毒之后的样子太恐怖了，鲜血淋漓的场面好想展现在了我的面前，让我有些不适。不过还好我坚持了下去，才没错过这本好书。后面这些场面就少了很多，更多是研究人员对埃博拉的追寻、研究，也让读者知道了很多关于病毒的故事。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s6919674.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/6832303/"> 别相信任何人</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [英]S.J.沃森 / 胡绯 / 中信出版社 / 2011-10 / 29.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-21
+      读过 /  / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+      不得不说这本小说读起来其实有点压抑，也有些混乱。克丽丝所遭遇的一切都是她自己作的
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27676061.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25924253/"> 嫌疑人X的献身</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [日]东野圭吾 / 刘子倩 / 南海出版公司 / 2014-6-1 / 35.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-20
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      佩服石神，也有点为他感到不值。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s29946339.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/30366068/"> 人生算法</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  陈楸帆 / 中信出版社 / 2019-1-1 / 58.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-20
+      读过 /  科幻 / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+      最初是被这本书的名字吸引过来的，后来被其中的故事吸引了，让我对未来有了一个不同的猜想。其实，我觉得，在未来，人类是在AI的掌控之中的，可人类好像并没有意识到这个问题。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s28040378.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25747852/"> 世界上最简单的会计书</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  （美）达雷尔•穆利斯、朱迪丝•奥洛夫 / 黄屹 / 机械工业出版社 / 2013-10 / 30.00
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-17
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+      很生动，可以把自己代入卖柠檬汁的小男孩，就可以很方便的记住那些名词，如何做表等等。对初学者来说，还是很不错的。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s29515264.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/27111611/"> 醒来觉得甚是爱你</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  朱生豪 / 三辰影库音像出版社 / 2017-8 / 66.00元（全二册）
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-12
+      读过 /  / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+      就我个人而言，其实觉得他有些话语真的太肉麻了，叫人受不了。另外，就是我不是宋清如，我对诗词和翻译也没兴趣，看他心里中英文交杂，叫人头🐰。我就不该听了别人说很甜，就看了的。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s27636558.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/26148067/"> 知日·手账最高</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  苏静 / 中信出版社 / 2016-4-1 / 45
+
+      </div>
+        <div class="hexo-douban-meta">2020-04-09
+      读过 /  / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+      大致讲了讲日本的手帐品牌和其历史，不过如果没用过这些牌子的话，就会觉得挺混乱的。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s3078482.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/3066477/"> 三体Ⅱ</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  刘慈欣 / 重庆出版社 / 2008-5 / 32.00
+
+      </div>
+        <div class="hexo-douban-meta">2020-02-25
+      读过 /  科幻 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+      剧情很棒！！！其中的人物你很难说他是个好人还是坏人，毕竟一切的选择都是由当时的情况所决定的！！！章北海真的是个让人不禁心生儒慕的一个人，他信奉责任高于一切，为了自己的责任，他可以做出在外人看来难以理解的事情，他也是个很透彻的人，是一个彻彻底底的军人。
+      
+  
+
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img9.doubanio.com/view/subject/s/public/s26040205.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/1192090/"> 球状闪电</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  刘慈欣 / 四川科学技术出版社 / 2005-6 / 22.00元
+
+      </div>
+        <div class="hexo-douban-meta">2020-02-25
+      读过 /  科幻 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s1067911.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/1007914/"> 窗边的小豆豆</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [日] 黑柳彻子 著、岩崎千弘 图 / 赵玉皎 / 南海出版公司 / 2003-1 / 20.00元
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s3563113.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/1361264/"> 撒哈拉的故事</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  三毛 / 皇冠出版社 / 1976 / 160 TWD
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s1015872.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/1023045/"> 我们仨</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  杨绛 / 生活·读书·新知三联书店 / 2003-7 / 18.80元
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s24468373.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/20427187/"> 看见</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  柴静 / 广西师范大学出版社 / 2013-1-1 / 39.80元
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  / ★★★☆☆ 还行</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img1.doubanio.com/view/subject/s/public/s2768378.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/2567698/"> 三体</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  刘慈欣 / 重庆出版社 / 2008-1 / 23.00
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  科幻 量子物理 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s29053580.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/4913064/"> 活着</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  余华 / 作家出版社 / 2012-8-1 / 20.00元
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  人性 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s4610502.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/3259440/"> 白夜行</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [日] 东野圭吾 / 刘姿君 / 南海出版公司 / 2008-9 / 29.80元
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  人性 爱情 / ★★★★★ 力荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-item">
+    <div class="hexo-douban-picture"><img src="/assets/douban-loading.gif" data-src="https://img3.doubanio.com/view/subject/s/public/s27264181.jpg" referrerPolicy="no-referrer" /></div>
+    <div class="hexo-douban-info">
+        <div class="hexo-douban-title"><a target="_blank" href="https://book.douban.com/subject/25862578/"> 解忧杂货店</a></div>
+        <div class="hexo-douban-meta">
+        
+  
+  [日] 东野圭吾 / 李盈春 / 南海出版公司 / 2014-5 / 39.50元
+
+      </div>
+        <div class="hexo-douban-meta">2019-08-23
+      读过 /  治愈 / ★★★★☆ 推荐</div>
+        <div class="hexo-douban-comments">
+  </div>
+    </div>
+</div>
+
+        
+        <div class="hexo-douban-pagination">
+    <a class="hexo-douban-button hexo-douban-firstpage" href="javascript:;"> 首页</a>
+    <a class="hexo-douban-button hexo-douban-previouspage" href="javascript:;">上一页</a>
+    <span class="hexo-douban-pagenum">2 / 3</span>
+    <a class="hexo-douban-button hexo-douban-nextpage" href="javascript:;">下一页</a>
+    <a class="hexo-douban-button hexo-douban-lastpage" href="javascript:;">尾页</a>
+</div>
+    </div>
+
+</div>
+
+<script>
+    /**
+ * Created by myths on 18-2-8.
+ */
+
+Element.prototype.siblings = function () {
+    var siblingElement = [];
+    var sibs = this.parentNode.children;
+    for (var i = 0; i < sibs.length; i++) {
+        if (sibs[i] !== this) {
+            siblingElement.push(sibs[i]);
+        }
+    }
+    return siblingElement;
+};
+function tabClick() {
+    //修改标签样式
+    this.classList.add('hexo-douban-active');
+    var sibs = this.siblings();
+    for (var j = 0; j < sibs.length; j++) {
+        sibs[j].classList.remove('hexo-douban-active');
+    }
+    //显示对应板块
+    var itemId = this.id.replace('tab', 'item');
+    var target = document.getElementById(itemId);
+    target.classList.remove('hexo-douban-hide');
+    target.classList.add('hexo-douban-show');
+    sibs = document.getElementById(itemId).siblings();
+    for (var k = 0; k < sibs.length; k++) {
+        sibs[k].classList.remove('hexo-douban-show');
+        sibs[k].classList.add('hexo-douban-hide');
+    }
+}
+var tabs = document.getElementsByClassName("hexo-douban-tab");
+for (var i = 0; i < tabs.length; i++) {
+    tabs[i].onclick = tabClick;
+    tabs[i].onclick.apply(tabs[i]);
+}
+tabs[2].click();
+
+    var firstpages = document.getElementsByClassName("hexo-douban-firstpage");
+var previouspages = document.getElementsByClassName("hexo-douban-previouspage");
+var nextpages = document.getElementsByClassName("hexo-douban-nextpage");
+var lastpages = document.getElementsByClassName("hexo-douban-lastpage");
+var pagenums = document.getElementsByClassName("hexo-douban-pagenum");
+
+function makePageNum(num, arr) {
+    return (num + 1) + ' / ' + (Math.ceil(arr.length / 10 === 0 ? 1 : Math.ceil(arr.length / 10)));
+}
+
+function firstBtn() {
+    var sibs = this.parentNode.siblings();
+    displayPage(sibs, 0);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(0, sibs);
+}
+
+function previousBtn() {
+    var sibs = this.parentNode.siblings();
+    var currNum = this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText;
+    currNum = currNum.substr(0, currNum.indexOf('/') - 1);
+    currNum = parseInt(currNum, 10) - 1;
+    if (currNum > 0) {
+        currNum--;
+    }
+    displayPage(sibs, currNum);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(currNum, sibs);
+}
+
+function nextBtn() {
+    var sibs = this.parentNode.siblings();
+    var currNum = this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText;
+    currNum = currNum.substr(0, currNum.indexOf('/') - 1);
+    currNum = parseInt(currNum, 10) - 1;
+    if (currNum < Math.ceil(sibs.length / 10) - 1) {
+        currNum++;
+    }
+    displayPage(sibs, currNum);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(currNum, sibs);
+}
+
+function lastBtn() {
+    var sibs = this.parentNode.siblings();
+    displayPage(sibs, Math.ceil(sibs.length / 10) - 1);
+    this.parentNode.getElementsByClassName('hexo-douban-pagenum')[0].innerText = makePageNum(Math.ceil(sibs.length / 10) - 1 === -1 ? 0 : Math.ceil(sibs.length / 10) - 1, sibs);
+}
+
+function displayPage(arr, num) {
+    for (var i = 0; i < arr.length; i++) {
+        if (Math.floor(i / 10) === num) {
+            arr[i].classList.remove('hexo-douban-hide');
+            var img = arr[i].getElementsByTagName('img')[0];
+            img.src = img.getAttribute('data-src');
+        } else {
+            arr[i].classList.add('hexo-douban-hide');
+        }
+    }
+}
+
+for (var i = 0; i < firstpages.length; i++) {
+
+    //add listener
+    firstpages[i].onclick = firstBtn;
+    previouspages[i].onclick = previousBtn;
+    nextpages[i].onclick = nextBtn;
+    lastpages[i].onclick = lastBtn;
+
+    //set page num
+    var size = pagenums[i].parentNode.siblings().length;
+    pagenums[i].innerText = '1 / ' + (Math.ceil(size / 10) === 0 ? 1 : Math.ceil(size / 10));
+    firstpages[i].click();
+}
+
+</script>
+
+</div><hr><div id="post-comment"><div class="comment_headling"><i class="fa fa-comments fa-fw" aria-hidden="true"></i><span> 评论</span></div><div class="vcomment" id="vcomment"></div><script src="https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js"></script><script>var requestSetting = function (from,set) {
+  var from = from
+  var setting = set.split(',').filter(function(item){
+  return from.indexOf(item) > -1
+  });
+  setting = setting.length == 0 ? from :setting;
+  return setting
+}
+
+var guestInfo = requestSetting(['nick','mail','link'],'nick,mail,link')
+var requiredFields = requestSetting(['nick','mail','link'],'nick')
+
+window.valine = new Valine({
+  el:'#vcomment',
+  appId: 'i0fGyWuvMkNazHg0P2N6uJgs-gzGzoHsz',
+  appKey: 'tuRDHDWBSg4sivE44GoiRNsK',
+  notify: false,
+  verify: false,
+  placeholder: '欢迎留下足迹噢*^____^*',
+  avatar: 'retro',
+  meta: guestInfo,
+  pageSize: '10',
+  lang: 'zh-CN',
+  recordIP: false,
+  serverURLs: '',
+  emojiCDN: '//i0.hdslb.com/bfs/emote/',
+  emojiMaps: {"tv_doge":"6ea59c827c414b4a2955fe79e0f6fd3dcd515e24.png","tv_亲亲":"a8111ad55953ef5e3be3327ef94eb4a39d535d06.png","tv_偷笑":"bb690d4107620f1c15cff29509db529a73aee261.png","tv_再见":"180129b8ea851044ce71caf55cc8ce44bd4a4fc8.png","tv_冷漠":"b9cbc755c2b3ee43be07ca13de84e5b699a3f101.png","tv_发怒":"34ba3cd204d5b05fec70ce08fa9fa0dd612409ff.png","tv_发财":"34db290afd2963723c6eb3c4560667db7253a21a.png","tv_可爱":"9e55fd9b500ac4b96613539f1ce2f9499e314ed9.png","tv_吐血":"09dd16a7aa59b77baa1155d47484409624470c77.png","tv_呆":"fe1179ebaa191569b0d31cecafe7a2cd1c951c9d.png","tv_呕吐":"9f996894a39e282ccf5e66856af49483f81870f3.png","tv_困":"241ee304e44c0af029adceb294399391e4737ef2.png","tv_坏笑":"1f0b87f731a671079842116e0991c91c2c88645a.png","tv_大佬":"093c1e2c490161aca397afc45573c877cdead616.png","tv_大哭":"23269aeb35f99daee28dda129676f6e9ea87934f.png","tv_委屈":"d04dba7b5465779e9755d2ab6f0a897b9b33bb77.png","tv_害羞":"a37683fb5642fa3ddfc7f4e5525fd13e42a2bdb1.png","tv_尴尬":"7cfa62dafc59798a3d3fb262d421eeeff166cfa4.png","tv_微笑":"70dc5c7b56f93eb61bddba11e28fb1d18fddcd4c.png","tv_思考":"90cf159733e558137ed20aa04d09964436f618a1.png","tv_惊吓":"0d15c7e2ee58e935adc6a7193ee042388adc22af.png"},
+  enableQQ: false,
+  requiredFields: requiredFields
+});</script></div></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" src="/img/EXo9mSKU0AABu2E.jpeg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">xxxuxonezero</div><div class="author-info__description">热衷于各种有趣的事物</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives"><div class="headline">文章</div><div class="length_num">13</div></a></div><div class="card-info-data-item is-center">      <a href="/tags"><div class="headline">标签</div><div class="length_num">15</div></a></div><div class="card-info-data-item is-center">     <a href="/categories"><div class="headline">分类</div><div class="length_num">3</div></a></div></div><div class="card-info-bookmark is-center"><a class="bookmark button--primary button--animated" id="bookmark-it" href="javascript:;" title="加入书签" target="_self"><i class="fa fa-bookmark" aria-hidden="true"></i><span>加入书签</span></a></div><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/xxxuxonezero" target="_blank" title="Github"><i class="fa fa-github" aria-hidden="true"></i></a><a class="social-icon" href="mailto:xuxuxuonezero@gmail.com" target="_blank" title="Email"><i class="fa fa-envelope" aria-hidden="true"></i></a><a class="social-icon" href="/atom.xml" target="_blank" title="RSS"><i class="fa fa-rss" aria-hidden="true"></i></a></div></div></div><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fa fa-bullhorn card-announcement-animation" aria-hidden="true"></i><span>公告</span></div><div class="announcement_content">一个热爱写代码，偶尔看看书的小可爱§(*￣▽￣*)§</div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fa fa-history" aria-hidden="true"></i><span>最新文章</span></div><div class="aside-recent-item"><div class="aside-recent-post"><a href="/2020/05/21/Counts/"><div class="aside-post-cover"><img class="aside-post-bg" data-src="http://www.yelin.monster/pictures/leetcode.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" title="1371. Find the Longest Substring Containing Vowels in Even Counts" alt="1371. Find the Longest Substring Containing Vowels in Even Counts"/></div><div class="aside-post-title"><div class="aside-post_title" href="/2020/05/21/Counts/" title="1371. Find the Longest Substring Containing Vowels in Even Counts">1371. Find the Longest Substring Containing Vowels in Even Counts</div><time class="aside-post_meta post-meta__date" title="发表于 2020-05-21 23:17:27">2020-05-21</time></div></a></div><div class="aside-recent-post"><a href="/2020/05/17/%E5%88%A9%E7%94%A8javacc%E5%AE%9E%E7%8E%B0%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E4%B8%80%EF%BC%89%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/"><div class="aside-post-cover"><img class="aside-post-bg" data-src="/img/81496502_p0_master1200.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" title="利用javacc实现编译器（一）词法分析" alt="利用javacc实现编译器（一）词法分析"/></div><div class="aside-post-title"><div class="aside-post_title" href="/2020/05/17/%E5%88%A9%E7%94%A8javacc%E5%AE%9E%E7%8E%B0%E7%BC%96%E8%AF%91%E5%99%A8%EF%BC%88%E4%B8%80%EF%BC%89%E8%AF%8D%E6%B3%95%E5%88%86%E6%9E%90/" title="利用javacc实现编译器（一）词法分析">利用javacc实现编译器（一）词法分析</div><time class="aside-post_meta post-meta__date" title="发表于 2020-05-17 15:26:14">2020-05-17</time></div></a></div><div class="aside-recent-post"><a href="/2020/05/17/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9Fvaline%E6%B5%8B%E8%AF%95/"><div class="aside-post-cover"><img class="aside-post-bg" data-src="/img/81496502_p0_master1200.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" title="评论系统valine测试" alt="评论系统valine测试"/></div><div class="aside-post-title"><div class="aside-post_title" href="/2020/05/17/%E8%AF%84%E8%AE%BA%E7%B3%BB%E7%BB%9Fvaline%E6%B5%8B%E8%AF%95/" title="评论系统valine测试">评论系统valine测试</div><time class="aside-post_meta post-meta__date" title="发表于 2020-05-17 11:41:22">2020-05-17</time></div></a></div><div class="aside-recent-post"><a href="/2020/05/16/k-Group/"><div class="aside-post-cover"><img class="aside-post-bg" data-src="http://www.yelin.monster/pictures/leetcode.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" title="【leetcode】Reverse Nodes in k-Group" alt="【leetcode】Reverse Nodes in k-Group"/></div><div class="aside-post-title"><div class="aside-post_title" href="/2020/05/16/k-Group/" title="【leetcode】Reverse Nodes in k-Group">【leetcode】Reverse Nodes in k-Group</div><time class="aside-post_meta post-meta__date" title="发表于 2020-05-16 22:56:27">2020-05-16</time></div></a></div><div class="aside-recent-post"><a href="/2020/05/15/K/"><div class="aside-post-cover"><img class="aside-post-bg" data-src="http://www.yelin.monster/pictures/leetcode.jpeg" onerror="this.onerror=null;this.src='/img/404.jpg'" title="【leetcode】Subarray Sum Equals K" alt="【leetcode】Subarray Sum Equals K"/></div><div class="aside-post-title"><div class="aside-post_title" href="/2020/05/15/K/" title="【leetcode】Subarray Sum Equals K">【leetcode】Subarray Sum Equals K</div><time class="aside-post_meta post-meta__date" title="发表于 2020-05-15 22:36:04">2020-05-15</time></div></a></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fa fa-folder-open" aria-hidden="true"></i><span>分类</span></div><ul class="card-category-list">
+            <li class="card-category-list-item"><a class="card-category-list-link" href="/categories/leetcode/"><span class="card-category-list-name">leetcode</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item"><a class="card-category-list-link" href="/categories/%E7%BC%96%E8%AF%91%E5%8E%9F%E7%90%86/"><span class="card-category-list-name">编译原理</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item"><a class="card-category-list-link" href="/categories/%E8%BD%AF%E4%BB%B6/"><span class="card-category-list-name">软件</span><span class="card-category-list-count">1</span></a></li>
+                       
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fa fa-tags" aria-hidden="true"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/MySQL/" style="font-size: 16px; color: #999">MySQL</a> <a href="/tags/Typora/" style="font-size: 16px; color: #999">Typora</a> <a href="/tags/hexo/" style="font-size: 16px; color: #999">hexo</a> <a href="/tags/java/" style="font-size: 16px; color: #999">java</a> <a href="/tags/javacc/" style="font-size: 16px; color: #999">javacc</a> <a href="/tags/machine-learning/" style="font-size: 16px; color: #999">machine learning</a> <a href="/tags/python/" style="font-size: 22px; color: #99a9bf">python</a> <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C/" style="font-size: 16px; color: #999">前缀和</a> <a href="/tags/%E5%89%8D%E7%BC%80%E5%92%8C%EF%BC%8C%E7%8A%B6%E6%80%81%E5%8E%8B%E7%BC%A9/" style="font-size: 16px; color: #999">前缀和，状态压缩</a> <a href="/tags/%E5%93%88%E5%B8%8C%E8%A1%A8/" style="font-size: 16px; color: #999">哈希表</a> <a href="/tags/%E6%95%99%E7%A8%8B/" style="font-size: 16px; color: #999">教程</a> <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/" style="font-size: 16px; color: #999">数据库</a> <a href="/tags/%E7%A7%91%E5%AD%A6%E4%B8%8A%E7%BD%91/" style="font-size: 16px; color: #999">科学上网</a> <a href="/tags/%E7%B3%BB%E7%BB%9F/" style="font-size: 22px; color: #99a9bf">系统</a> <a href="/tags/%E9%93%BE%E8%A1%A8/" style="font-size: 16px; color: #999">链表</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fa fa-archive" aria-hidden="true"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/05/"><span class="card-archive-list-date">五月 2020</span><span class="card-archive-list-count">8</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/12/"><span class="card-archive-list-date">十二月 2019</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/10/"><span class="card-archive-list-date">十月 2019</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2019/09/"><span class="card-archive-list-date">九月 2019</span><span class="card-archive-list-count">1</span></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fa fa-line-chart" aria-hidden="true"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="webinfo-article-name">文章数目 :</div><div class="webinfo-article-count">13</div></div><div class="webinfo-item"><div class="webinfo-runtime-name">已运行时间 :</div><div class="webinfo-runtime-count" id="webinfo-runtime-count" start_date="9/22/2019 00:00:00">     </div></div><div class="webinfo-item">      <div class="webinfo-site-uv-name">本站访客数 :</div><div class="webinfo-site-uv-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="webinfo-site-name">本站总访问量 :</div><div class="webinfo-site-pv-count" id="busuanzi_value_site_pv"></div></div></div></div></div></div></main><footer id="footer" data-type="color"><div id="footer-wrap"><div class="copyright">&copy;2019 - 2020 By xxxuxonezero</div><div class="framework-info"><span>驱动 </span><a href="https://hexo.io" target="_blank" rel="noopener"><span>Hexo</span></a><span class="footer-separator">|</span><span>主题 </span><a href="https://github.com/jerryc127/hexo-theme-butterfly" target="_blank" rel="noopener"><span>Butterfly</span></a></div></div></footer></div><section class="rightside" id="rightside"><div id="rightside-config-hide"><a class="translate_chn_to_cht" id="translateLink" href="javascript:translatePage();" title="简繁转换" target="_self">繁</a><i class="darkmode fa fa-moon-o" id="darkmode" title="夜间模式"></i></div><div id="rightside-config-show"><div id="rightside_config" title="设置"><i class="fa fa-cog" aria-hidden="true"></i></div><i class="fa fa-arrow-up" id="go-up" title="回到顶部" aria-hidden="true"></i></div></section><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><script src="https://cdn.jsdelivr.net/npm/instant.page@latest/instantpage.min.js" type="module"></script><script src="https://cdn.jsdelivr.net/npm/lozad/dist/lozad.min.js"></script><script src="/js/third-party/ClickShowText.js"></script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/miku.model.json"},"log":false});</script></body></html>
