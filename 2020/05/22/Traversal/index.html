@@ -98,7 +98,7 @@ function activateLightMode(){
 <p>前序遍历的顺序是：根–&gt;左–&gt;右</p>
 <p>而中序遍历的顺序是：左–&gt;根–&gt;右</p>
 <p>通过这种遍历顺序的不同，不难发现前序遍历的第一个元素就是这棵树的根节点，只要在inorder中找到这个节点root，就可以把root之前的节点划分到左子树中，root之后的节点划分到右子树中，这样就把问题划分成了两个子问题。我们可以按照这样的思路继续划分下去，直至无法再分。</p>
-<img src= data:image/gif;base64,R0lGODdhAQABAPAAAMPDwwAAACwAAAAAAQABAAACAkQBADs= data-src="/2020/05/22/Traversal/1.jpg" class="">
+
 
 <p>问题变成了在[left,root-1]和[root+1,right]的问题了。先把左子树构造完，之后再构造右子树，其实和遍历是有点像的。</p>
 <p>head.left=build(left,root-1,inorder,preorder);<br>head.right=build(root+1,right,inorder,preorder);</p>
